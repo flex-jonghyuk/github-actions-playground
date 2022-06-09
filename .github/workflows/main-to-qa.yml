@@ -1,0 +1,35 @@
+name: Back Merge (Master -> QA)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create-pull-request:
+    runs-on: [self-hosted, frontend]
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v2
+
+      - name: PR 자동생성(Master -> QA)
+        if: ${{ github.base_ref == 'master' }}
+        id: cpr
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "qa"
+          github_token: ${{ secrets.SECRET_GH_TOKEN }}
+          pr_body: "👑 **Master -> QA**"
+          pr_label: "Automated,BackMerge"
+          pr_title: "Master -> QA"
+
+      - name: Safe directory설정
+        run: |
+          git config --global --add safe.directory /github/workspace
+
+      - name: Auto Merge 옵션 적용
+        if: steps.cpr.outputs.pr_number != null
+        uses: peter-evans/enable-pull-request-automerge@v1s
+        with:
+          token: ${{ secrets.SECRET_GH_TOKEN }}
+          pull-request-number: ${{ steps.cpr.pr_number }}
