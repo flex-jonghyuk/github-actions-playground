@@ -1,9 +1,8 @@
-name: Back Merge
+name: Back Merge (QA -> Develop)
 
 on:
   push:
     branches:
-      - main
       - qa
 
 jobs:
@@ -13,25 +12,14 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v2
 
-      - name: PR 자동생성(Main -> QA)
-        if: ${{ github.base_ref == 'main' }}
-        id: cpr
-        uses: repo-sync/pull-request@v2
-        with:
-          destination_branch: "qa"
-          github_token: ${{ secrets.SECRET_GH_TOKEN }}
-          pr_body: "👑 **Main -> QA**"
-          pr_label: "Automated,BackMerge"
-          pr_title: "Main -> QA"
-
-      - name: PR 자동생성(QA -> develop)
+      - name: PR 자동생성(qa -> Develop)
         if: ${{ github.base_ref == 'qa' }}
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "develop"
           github_token: ${{ secrets.SECRET_GH_TOKEN }}
-          pr_body: "👑 **QA -> Develop**"
+          pr_body: "👑 **qa -> develop**"
           pr_label: "Automated,BackMerge"
           pr_title: "QA -> Develop"
 
@@ -41,7 +29,7 @@ jobs:
 
       - name: Auto Merge 옵션 적용
         if: steps.cpr.outputs.pr_number != null
-        uses: peter-evans/enable-pull-request-automerge@v1
+        uses: peter-evans/enable-pull-request-automerge@v1s
         with:
           token: ${{ secrets.SECRET_GH_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pr_number }}
+          pull-request-number: ${{ steps.cpr.pr_number }}
