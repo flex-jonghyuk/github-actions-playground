@@ -35,9 +35,9 @@ jobs:
       - name: 해당 분기문에서 얻은 값을 통해, 아웃풋으로 릴리즈? 태그 만들기
         id: bump-semver
         uses: actions-ecosystem/action-bump-semver@v1
-          with:
-            current_version: ${{ steps.latest_release.outputs.tag_name }}
-            level: ${{ env.BUMP }}
+        with:
+          current_version: ${{ steps.latest_release.outputs.tag_name }}
+          level: ${{ env.BUMP }}
 
       - name: 릴리즈 만들기
         id: create-release
@@ -49,6 +49,6 @@ jobs:
           release_name: Release ${{ steps.bump-semver.outputs.new_version }}
           body: |
             이전 릴리즈와의 diff
-            - https://github.com/flex-team/flex-frontend/compare/${{ steps.latest_release.outputs.tag_name }}...${{ steps.bump-semver.outputs.new_version }}
+            - https://github.com/flex-jonghyuk/github-actions-playground/compare/${{ steps.latest_release.outputs.tag_name }}...${{ steps.bump-semver.outputs.new_version }}
           draft: false
           prerelease: false
