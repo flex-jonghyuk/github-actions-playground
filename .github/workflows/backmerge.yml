@@ -1,0 +1,47 @@
+name: Back Merge
+
+on:
+  push:
+    branches:
+      - main
+      - qa
+
+jobs:
+  create-pull-request:
+    runs-on: [self-hosted, frontend]
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v2
+
+      - name: PR 자동생성(Main -> QA)
+        if: ${{ github.base_ref == 'main' }}
+        id: cpr
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "qa"
+          github_token: ${{ secrets.SECRET_GH_TOKEN }}
+          pr_body: "👑 **Main -> QA**"
+          pr_label: "Automated,BackMerge"
+          pr_title: "Main -> QA"
+
+      - name: PR 자동생성(QA -> develop)
+        if: ${{ github.base_ref == 'qa' }}
+        id: cpr
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "develop"
+          github_token: ${{ secrets.SECRET_GH_TOKEN }}
+          pr_body: "👑 **QA -> Develop**"
+          pr_label: "Automated,BackMerge"
+          pr_title: "QA -> Develop"
+
+      - name: Safe directory설정
+        run: |
+          git config --global --add safe.directory /github/workspace
+
+      - name: Auto Merge 옵션 적용
+        if: steps.cpr.outputs.pr_number != null
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          token: ${{ secrets.SECRET_GH_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pr_number }}
