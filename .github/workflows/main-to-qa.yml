@@ -1,0 +1,34 @@
+name: Hotfix Back Merge (Master -> Develop)
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v2
+
+      - name: PR 자동생성(Master -> QA)
+        id: cpr
+        uses: repo-sync/pull-request@v2
+        with:
+          destination_branch: "develop"
+          github_token: ${{ secrets.SECRET_GH_TOKEN }}
+          pr_body: "👑 **Master -> Develop**"
+          pr_label: "Automated,BackMerge"
+          pr_title: "Master -> Develop"
+
+      - name: Safe directory설정
+        run: |
+          git config --global --add safe.directory /github/workspace
+
+      - name: Auto Merge 옵션 적용
+        if: steps.cpr.outputs.pr_number != null
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          token: ${{ secrets.SECRET_GH_TOKEN }}
+          pull-request-number: ${{ steps.cpr.outputs.pr_number }}
