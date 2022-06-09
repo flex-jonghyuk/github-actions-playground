@@ -28,7 +28,7 @@ jobs:
 
       - name: Safe directory설정
         run: |
-          git config --global --add safe.directory ./.github/workspace
+          git config --global --add safe.directory .github/workspace
 
       - name: Auto Merge 옵션 적용
         if: steps.cpr.outputs.pr_number != null
