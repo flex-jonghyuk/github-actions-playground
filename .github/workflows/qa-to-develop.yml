@@ -24,7 +24,7 @@ jobs:
 
       - name: 폴더의 존재
         run: |
-          ls -al /github/workspace
+          ls -al /.github/workspace
 
       - name: Safe directory설정
         run: |
