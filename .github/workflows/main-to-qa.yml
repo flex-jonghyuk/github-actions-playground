@@ -1,4 +1,4 @@
-name: Back Merge (Master -> QA)
+name: Hotfix Back Merge (Master -> Develop)
 
 on:
   push:
@@ -16,11 +16,11 @@ jobs:
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
-          destination_branch: "qa"
+          destination_branch: "develop"
           github_token: ${{ secrets.SECRET_GH_TOKEN }}
-          pr_body: "👑 **Master -> QA**"
+          pr_body: "👑 **Master -> Develop**"
           pr_label: "Automated,BackMerge"
-          pr_title: "Master -> QA"
+          pr_title: "Master -> Develop"
 
       - name: Safe directory설정
         run: |
