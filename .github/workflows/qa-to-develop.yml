@@ -22,13 +22,9 @@ jobs:
           pr_label: "Automated,BackMerge"
           pr_title: "QA -> Develop"
 
-      - name: 폴더의 존재
-        run: |
-          ls -al .github/workspace
-
       - name: Safe directory설정
         run: |
-          git config --global --add safe.directory .github/workspace
+          git config --global --add safe.directory /github/workspace
 
       - name: Auto Merge 옵션 적용
         if: steps.cpr.outputs.pr_number != null
