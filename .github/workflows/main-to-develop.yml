@@ -14,7 +14,7 @@ jobs:
 
       - name: PR 자동생성(Master -> QA)
         id: cpr
-        uses: repo-sync/pull-request@v2
+        uses: repo-sync/pull-request@v2.5
         with:
           destination_branch: "develop"
           github_token: ${{ secrets.SECRET_GH_TOKEN }}
