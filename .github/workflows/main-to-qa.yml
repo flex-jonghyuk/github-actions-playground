@@ -13,7 +13,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: PR 자동생성(Master -> QA)
-        if: ${{ github.base_ref == 'master' }}
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
@@ -29,7 +28,7 @@ jobs:
 
       - name: Auto Merge 옵션 적용
         if: steps.cpr.outputs.pr_number != null
-        uses: peter-evans/enable-pull-request-automerge@v1s
+        uses: peter-evans/enable-pull-request-automerge@v1
         with:
           token: ${{ secrets.SECRET_GH_TOKEN }}
-          pull-request-number: ${{ steps.cpr.pr_number }}
+          pull-request-number: ${{ steps.cpr.outputs.pr_number }}
