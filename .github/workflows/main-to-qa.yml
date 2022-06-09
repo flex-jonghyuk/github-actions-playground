@@ -7,7 +7,7 @@ on:
 
 jobs:
   create-pull-request:
-    runs-on: [self-hosted, frontend]
+    runs-on: ubuntu-latest
     steps:
       - name: 체크아웃
         uses: actions/checkout@v2
