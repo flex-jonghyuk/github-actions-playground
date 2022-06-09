@@ -1,0 +1,54 @@
+name: Create Release
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: PR이 Merged 되었는지 판단 후 체크아웃
+        if: github.event.pull_request.merged == true
+        uses: actions/checkout@v2
+
+      - name: 최신 릴리즈 가져오기
+        id: latest_release
+        uses: InsonusK/get-latest-release@v1.0.1
+        with:
+          myToken: ${{ secrets.SECRET_GH_TOKEN }}
+          view_top: 1
+
+      - name: head가 qa인 경우, 마이너 버전을 올린다(env) -> Minor
+        if: ${{ github.head_ref == 'qa' }}
+        run: |
+          echo "BUMP=minor" >> $GITHUB_ENV
+
+      - name: head가 develop이 아닌 경우(hotfix), 패치버전을 올린다(env) -> Patch
+        if: ${{ github.head_ref != 'qa' }}
+        run: |
+          echo "BUMP=patch" >> $GITHUB_ENV
+
+      - name: 해당 분기문에서 얻은 값을 통해, 아웃풋으로 릴리즈? 태그 만들기
+        id: bump-semver
+        uses: actions-ecosystem/action-bump-semver@v1
+        with:
+          current_version: ${{ steps.latest_release.outputs.tag_name }}
+          level: ${{ env.BUMP }}
+
+      - name: 릴리즈 만들기
+        id: create-release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.SECRET_GH_TOKEN }} #
+        with:
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
+          release_name: Release ${{ steps.bump-semver.outputs.new_version }}
+          body: |
+            이전 릴리즈와의 diff
+            - https://github.com/flex-jonghyuk/github-actions-playground/compare/${{ steps.latest_release.outputs.tag_name }}...${{ steps.bump-semver.outputs.new_version }}
+          draft: false
+          prerelease: false
