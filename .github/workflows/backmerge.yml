@@ -3,7 +3,7 @@ name: Back Merge
 on:
   push:
     branches:
-      - main
+      - master
       - qa
 
 jobs:
