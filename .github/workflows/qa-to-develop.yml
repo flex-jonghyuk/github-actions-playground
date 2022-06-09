@@ -29,7 +29,7 @@ jobs:
 
       - name: Auto Merge 옵션 적용
         if: steps.cpr.outputs.pr_number != null
-        uses: peter-evans/enable-pull-request-automerge@v1s
+        uses: peter-evans/enable-pull-request-automerge@v1
         with:
           token: ${{ secrets.SECRET_GH_TOKEN }}
           pull-request-number: ${{ steps.cpr.pr_number }}
