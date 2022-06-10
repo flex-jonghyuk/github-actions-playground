@@ -51,6 +51,8 @@ jobs:
           tag_name: ${{ steps.bump-semver.outputs.new_version }}
           release_name: ${{ steps.bump-semver.outputs.new_version }}
           body: |
+            [Jenkins 파이프라인](https://jenkins.grapeisfruit.com/job/release-pipeline-prod/build)의 SHA 파라미터로 ${{ steps.bump-semver.outputs.new_version }}를 넣어 배포하세요!
+
             이전 릴리즈와의 diff
             - https://github.com/flex-jonghyuk/github-actions-playground/compare/${{ steps.latest_release.outputs.tag_name }}...${{ steps.bump-semver.outputs.new_version }}
           draft: false
