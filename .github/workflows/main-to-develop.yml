@@ -1,9 +1,9 @@
-name: Hotfix Back Merge (Master -> Develop)
+name: Hotfix Back Merge (Main -> Develop)
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   create-pull-request:
@@ -12,15 +12,15 @@ jobs:
       - name: 체크아웃
         uses: actions/checkout@v2
 
-      - name: PR 자동생성(Master -> QA)
+      - name: PR 자동생성(Main -> Develop)
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
           destination_branch: "develop"
           github_token: ${{ secrets.SECRET_GH_TOKEN }}
-          pr_body: "👑 **Master -> Develop**"
+          pr_body: "👑 **Main -> Develop**"
           pr_label: "Automated,BackMerge"
-          pr_title: "Master -> Develop"
+          pr_title: "Main -> Develop"
 
       - name: Safe directory설정
         run: |
