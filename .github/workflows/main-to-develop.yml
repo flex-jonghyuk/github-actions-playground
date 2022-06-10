@@ -3,7 +3,7 @@ name: Hotfix Back Merge (Main -> Develop)
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   create-pull-request:
