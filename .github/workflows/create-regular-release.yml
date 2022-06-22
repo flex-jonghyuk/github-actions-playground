@@ -46,6 +46,6 @@ jobs:
         id: create-release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.bump-semver.outputs.new_version }}
+          tag_name: ${{ steps.bump-semver.outputs.new_version }}
           token: ${{ secrets.GITHUB_TOKEN }}
           generate_release_notes: true
