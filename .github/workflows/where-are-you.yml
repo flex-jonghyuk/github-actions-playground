@@ -16,7 +16,7 @@ jobs:
         shell: bash
         run: |
           echo ${{ github.actor }}
-          git clone --filter=blob:none --no-checkout --depth 2 "https://${{ github.actor }}:${{ github.token }}@github.com/${{ github.action_repository }}.git" .
+          git clone --filter=blob:none --no-checkout --depth 2 "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
           git rev-parse HEAD
           git rev-parse HEAD~1
           git rev-parse HEAD~2
