@@ -12,7 +12,7 @@ jobs:
     name: partial-clone
     runs-on: ubuntu-latest
     steps:
-     - name: exit
+      - name: exit
         shell: bash
         run: |
           exit 0
