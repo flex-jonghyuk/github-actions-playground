@@ -10,20 +10,13 @@ on:
 jobs:
   where-are-you:
     name: partial-clone
-    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-      - name: exit
-        shell: bash
-        run: |
-          exit 0
-
       - name: Partial Clone
         shell: bash
         run: |
-          REPO="https://${ github.actor }:${ github.token }@github.com/${ github.action_repository }.git"
-
-          git clone --filter=blob:none --no-checkout --depth 2 $REPO .
+          echo $GITHUB_REF
+          git clone --filter=blob:none --no-checkout --depth 2 $GITHUB_REF
           git rev-parse HEAD
           git rev-parse HEAD~1
           git rev-parse HEAD~2
