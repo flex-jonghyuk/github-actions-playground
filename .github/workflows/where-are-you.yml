@@ -15,11 +15,11 @@ jobs:
       - name: Partial Clone
         shell: bash
         run: |
-          git clone --progress --filter=blob:none --no-checkout --depth 2 "https://${GITHUB_REPOSITORY_OWNER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
-          git rev-parse HEAD
-          git rev-parse HEAD~1
+          echo ${{ github.head_ref }}
+          git clone --progress --filter=blob:none --no-checkout "https://${GITHUB_REPOSITORY_OWNER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
+          echo "기준점이 되는 head $(git rev-parse HEAD)"
 
-          git checkout develop
+          git checkout ${}
           git rev-parse HEAD
           git rev-parse HEAD~1
           git rev-parse HEAD~2
