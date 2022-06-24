@@ -18,7 +18,6 @@ jobs:
           git clone --progress --filter=blob:none --no-checkout --depth 2 "https://${GITHUB_REPOSITORY_OWNER}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" .
           git rev-parse HEAD
           git rev-parse HEAD~1
-          git rev-parse HEAD~2
 
           git checkout develop
           git rev-parse HEAD
